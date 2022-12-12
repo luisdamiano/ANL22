@@ -1,5 +1,9 @@
 \documentclass{snedecorbeamer}
 
+%% Diagrams
+\usepackage{tikz}
+\usetikzlibrary{positioning,decorations.pathreplacing,quotes,overlay-beamer-styles}
+
 %% https://tex.stackexchange.com/a/117661
 \AtBeginSection{\frame{\sectionpage}}
 \AtBeginSubsection{\frame{\subsectionpage}}
@@ -59,20 +63,75 @@
   \frametitle{Functional input computer experiments}
   \framesubtitle{What is it?}
 
-  Table
+  \begin{table}[]
+    \footnotesize
+    \begin{tabular}{@{}lllll@{}}
+      \toprule
+      \small Output
+      & \begin{tabular}[c]{@{}l@{}}\small Input\\ $X(t): \mathcal{T} \to
+	  \mathbb{R}$\end{tabular}
+      & \begin{tabular}[c]{@{}l@{}}\small Index\\ $t \in \mathcal{T}$\end{tabular}
+      & \begin{tabular}[c]{@{}l@{}}\small Index subspaces\\ $t \in
+	  \mathcal{T}_u$\end{tabular}
+      & \small Mechanism \\ \midrule
+      Plant growth
+      & Phosphorus
+      & Depth
+      & Soil layers
+      & Root biomass \vspace{1ex}
+      \\
+      & Precipitation
+      & Time
+      & Cycles, seasons
+      &
+	\begin{tabular}[c]{@{}l@{}}
+	  Germination \\photosynthesis \\ nutrient absorption
+	\end{tabular}
+      \vspace{1ex}
+      \\
+      Soil erosion
+      & Elevation
+      & Distance
+      & Up/down slope
+      & Water erosion \vspace{1ex}
+      \\
+      Radiance
+      & Chemical species
+      & Elevation
+      & Atmospheric layers
+      & Reflectivity \vspace{0ex}
+      \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+
+  \vfill
+  \begin{quote}
+    Index subspaces can provide a meaningful representation of the
+    physical process
+  \end{quote}
+
+  \vfill
+  \begin{quote}
+    Can we establish an explicit link $X(t) \xrightarrow{f} y$ for UQ?%
+  \end{quote}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Functional input computer experiments}
+\begin{frame}[c]
+  \frametitle{ARD + Functional inputs}
   \framesubtitle{What is the state of the art?}
 
-  Lit review goes here
+  \input{inc/litrev_diagram.tex}
 
-  Diagram, maybe add keywords in one line or as a footnote
+  \blankfootnote{
+    $~^{[1]}$\cite{muehlenstaedt2017,nanty2016,wang2017,tan2019,wang2019,betancourt2020,betancourt2020a,li2021} \,
+    $~^{[2]}$\cite{morris2012,kuttubekova2019}
+    Add a keyword (e.g., PCA, FPCA, etc)
+  }
 \end{frame}
 
 % Automatic Dynamic Relevance Determination ------------------------------------
-\section{Automatic Dynamic Relevance Determination}
+\section{Automatic \textit{Dynamic} Relevance Determination}
 
 \begin{frame}
   \frametitle{Automatic Dynamic Relevance Determination}
@@ -137,16 +196,46 @@
   \frametitle{The science}
   \framesubtitle{Explain the science here}
 
-  Show a map here!!
+  \begin{figure}
+    \centering
+    \includegraphics[width=.6\textwidth]{inc/dep_detachment_map_20220630_1610}
+  \end{figure}
 
+  {\tiny
+    View interactive map here: 
+  }
+
+% https://www.dailyerosion.org/map/#20220601/20220630/avg_loss/-94.20/42.56/7.002790504174966//0/
+  
   A 1-billion dollar loss
 \end{frame}
+
+\begin{frame}
+  \frametitle{The science (2)}
+  \framesubtitle{Explain the science here}
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=.8\textwidth]{inc/dep_detachment_map_20220630_168}
+  \end{figure}
+
+  {\tiny
+    View interactive map here: 
+  }
+
+% https://www.dailyerosion.org/map/#20220601/20220630/avg_loss/-94.20/42.56/7.002790504174966//0/
+  A 1-billion dollar loss
+\end{frame}
+
 
 \begin{frame}
   \frametitle{Data}
   \framesubtitle{An example}
 
-  An input profile, either from data or a WEPP screen capture
+  Image with 3 or 4 facets and the Sel.Del as a number
+
+  {\tiny
+    Model documentation}
 \end{frame}
 
 \begin{frame}
@@ -156,6 +245,8 @@
   Multiple vector, functional inputs
 
   Exact integral for piecewise linear models
+
+  Math goes here
 \end{frame}
 
 \begin{frame}
