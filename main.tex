@@ -1,0 +1,275 @@
+\documentclass{snedecorbeamer}
+
+%% https://tex.stackexchange.com/a/117661
+\AtBeginSection{\frame{\sectionpage}}
+\AtBeginSubsection{\frame{\subsectionpage}}
+
+% Setup ------------------------------------------------------------------------
+\graphicspath{{include/}}
+
+\title{\textbf{Automatic Relevance Determination} \\
+  for Gaussian Processes with Functional Inputs}
+
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+\author[Damiano et al]{
+  \textbf{Luis Damiano}\footnote[2]{
+    \tiny{\href{mailto:ldamiano@iastate.edu}{ldamiano@iastate.edu}}
+  }}
+
+\institute{
+  Department of Statistics, Iowa State University
+}
+
+\date[December 19th, 2022]{
+  \tiny{Argonne National Laboratory \\
+    MCS Mathematics and Computer Science} \\
+  December 19th, 2022}
+
+\begin{document}
+
+% Title page -------------------------------------------------------------------
+\begin{frame}
+  \titlepage{}
+  {
+    \tiny{
+      Funded, in part, by
+      \begin{itemize}
+      \item[-] ISU Presidential Interdisciplinary
+	Research Initiative on C-CHANGE:~Science for a Changing
+	Agriculture
+      \item[-] Foundation for Food and Agriculture Research
+	Grant ID: CA18-SS-0000000278
+      \end{itemize}
+    }
+  }
+\end{frame}
+
+% Introduction -----------------------------------------------------------------
+%
+\section{Motivation}
+
+\begin{frame}
+  \frametitle{Automatic Relevance Determination}
+  \framesubtitle{What is it?}
+
+  Text
+\end{frame}
+
+\begin{frame}
+  \frametitle{Functional input computer experiments}
+  \framesubtitle{What is it?}
+
+  Table
+\end{frame}
+
+\begin{frame}
+  \frametitle{Functional input computer experiments}
+  \framesubtitle{What is the state of the art?}
+
+  Lit review goes here
+
+  Diagram, maybe add keywords in one line or as a footnote
+\end{frame}
+
+% Automatic Dynamic Relevance Determination ------------------------------------
+\section{Automatic Dynamic Relevance Determination}
+
+\begin{frame}
+  \frametitle{Automatic Dynamic Relevance Determination}
+  \framesubtitle{Framework}
+
+  A bunch of slides here
+\end{frame}
+
+% Microwave Limb Sounder -------------------------------------------------------
+\section{NASA's Microwave Limb Sounder \\ {\small a case study}}
+
+\begin{frame}
+  \frametitle{The science}
+  \framesubtitle{Explain the science here}
+
+  A satellite image (left)
+
+  An example of the profiles but with the atmospheric rule
+\end{frame}
+
+\begin{frame}
+  \frametitle{Methods}
+  \framesubtitle{Model}
+
+  Introduce the ALF
+
+  Equation, but also the curves
+\end{frame}
+
+\begin{frame}
+  \frametitle{Methods}
+  \framesubtitle{Implementation}
+
+  Implementation details
+\end{frame}
+
+\begin{frame}
+  \frametitle{Results}
+  \framesubtitle{Posterior for model interpretation}
+
+  Figure with posterior weights for fiGP
+\end{frame}
+
+\begin{frame}
+  \frametitle{Results}
+  \framesubtitle{Posterior for model comparison}
+
+  Figure with posterior weights for fiGP vs viGP
+\end{frame}
+
+\begin{frame}
+  \frametitle{Results}
+  \framesubtitle{Prediction}
+
+  Table with OOS validation statistics
+\end{frame}
+
+% Daily Erosion Project --------------------------------------------------------
+\section{Daily Erosion Project \\ {\small a case study}}
+
+\begin{frame}
+  \frametitle{The science}
+  \framesubtitle{Explain the science here}
+
+  Show a map here!!
+
+  A 1-billion dollar loss
+\end{frame}
+
+\begin{frame}
+  \frametitle{Data}
+  \framesubtitle{An example}
+
+  An input profile, either from data or a WEPP screen capture
+\end{frame}
+
+\begin{frame}
+  \frametitle{Methods}
+  \framesubtitle{Model}
+
+  Multiple vector, functional inputs
+
+  Exact integral for piecewise linear models
+\end{frame}
+
+\begin{frame}
+  \frametitle{Methods}
+  \framesubtitle{Implementation}
+
+  Implementation (but skip it!)
+\end{frame}
+
+\begin{frame}
+  \frametitle{Results}
+  \framesubtitle{Posterior for model interpretation}
+
+  Figure with posterior weights for fiGP, and also weights for vector inputs
+\end{frame}
+
+\begin{frame}
+  \frametitle{Results}
+  \framesubtitle{Prediction}
+
+  Validation table
+\end{frame}
+
+% Discussion -------------------------------------------------------------------
+\begin{frame}
+  \frametitle{Discussion}
+  \framesubtitle{My work}
+
+  Toward a framework for Gaussian processes with functional inputs
+  \begin{itemize}
+  \item Framework for Gaussian processes with functional inputs
+  \item Multiple vector and functional inputs
+  \item Exact integral for piecewise linear inputs
+  \item 3 functional weight forms
+  \item 2 case studies
+  \end{itemize}
+
+  Future work
+  \begin{itemize}
+  \item In principle, should work with any inference / training paradigm
+  \item Couple with local approximation for big datasets
+  \end{itemize}
+\end{frame}
+
+
+% Closing slides ---------------------------------------------------------------
+\begin{frame}[c]
+  \frametitle{Acknowledgments}
+  \centering
+
+  {\small
+    Benjamin Neo, Jarad Niemi, Max D. Morris (ISU) \\
+    Margaret Johnson, Joaquim Texeira, Microwave Limb Sounder team
+    (JPL, Caltech) \\
+    Brian Gelder, Daryl Hermann, Rick Cruise (ISU) \\
+    C-CHANGE:~Science for a Changing Agriculture \\
+    Foundation for Food and Agriculture Research
+  }
+
+  \vfill
+
+  {\huge Thank you!}
+
+  \vfill
+
+  {\tiny References and extra slides on the back}
+
+  \href{ldamiano@iastate.edu}{\beamergotobutton{mail}
+    ldamiano@iastate.edu}
+
+  \href{https://github.com/luisdamiano/ANL22}{\beamergotobutton{repo}
+https://github.com/luisdamiano/ANL22}
+\end{frame}
+
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+\begin{frame}[allowframebreaks]{References}
+  \tiny
+  \bibliographystyle{unsrt}
+  \bibliography{references}
+\end{frame}
+
+% Appendix ---------------------------------------------------------------------
+\section{Appendix}
+\begin{frame}
+  \frametitle{Trapezoidal approximation}
+
+  \begin{figure}[h!]
+    \centering
+    \caption[]{Trapezoidal approximation}
+  \end{figure}
+
+  {
+    \setlength{\abovedisplayskip}{-1cm}
+    \begin{align}
+      \int_{\mathcal{T}}
+      \omega(t)
+      {\left(X_i(t) - X_j(t) \right)}^2 dt
+      \approx
+      &
+      \sum_{k = 2}^{K} {
+      \left(t_{k} - t_{k - 1}\right)
+      \frac{
+      \Delta_{i, j, k} +
+      \Delta_{i, j, k - 1}
+      }{2}
+      } \\
+      \Delta_{i, j, k} =
+      & \
+      \omega(t_{k-1}) {\left(x_{i, k} - x_{j, k}\right)}^2
+    \end{align}
+  }
+
+  \blankfootnote{See~\cite{muehlenstaedt2017} for a B-spline
+    approach}
+\end{frame}
+
+\end{document}
