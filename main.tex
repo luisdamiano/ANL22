@@ -1,10 +1,12 @@
 \documentclass{snedecorbeamer}
 
 %% Diagrams
+%%% General tikz preamble
 \usepackage{tikz}
 \usetikzlibrary{positioning,decorations.pathreplacing,quotes,overlay-beamer-styles}
 
-%% https://tex.stackexchange.com/a/117661
+%% Create section slides
+%%% https://tex.stackexchange.com/a/117661
 \AtBeginSection{\frame{\sectionpage}}
 \AtBeginSubsection{\frame{\subsectionpage}}
 
@@ -62,69 +64,81 @@
 power (piironen2016)
 \end{frame}
 
+% Rework starts here -----------------------------------------------------------
 \begin{frame}
-  \frametitle{Functional input computer experiments}
-  \framesubtitle{What is it?}
+  \frametitle{Functional input computer models}
+  \framesubtitle{A few examples}
 
   \begin{table}[]
     \footnotesize
-    \begin{tabular}{@{}lllll@{}}
-      \toprule
+    %\begin{tabular}{@{}lllll@{}}
+    \begin{tabular}{p{15ex}p{20ex}p{15ex}p{20ex}p{15ex}}
+%      \toprule
       \small Output
       & \begin{tabular}[c]{@{}l@{}}\small Input\\ $X(t): \mathcal{T} \to
 	  \mathbb{R}$\end{tabular}
       & \begin{tabular}[c]{@{}l@{}}\small Index\\ $t \in \mathcal{T}$\end{tabular}
       & \begin{tabular}[c]{@{}l@{}}\small Index subspaces\\ $t \in
 	  \mathcal{T}_u$\end{tabular}
-      & \small Mechanism \\ \midrule
+      & \small Mechanism
+      \\
+      \midrule
+      \only<1>{%
       Plant growth
       & Phosphorus
       & Depth
       & Soil layers
       & Root biomass \vspace{1ex}
-      \\
-      & Precipitation
-      & Time
-      & Cycles, seasons
-      &
-	\begin{tabular}[c]{@{}l@{}}
-	  Germination \\photosynthesis \\ nutrient absorption
-	\end{tabular}
-      \vspace{1ex}
-      \\
+      }
+      \only<2>{%
       Soil erosion
       & Elevation
       & Distance
       & Up/down slope
       & Water erosion \vspace{1ex}
-      \\
+      }
+      \only<3>{%
       Radiance
       & Chemical species
       & Elevation
       & Atmospheric layers
-      & Reflectivity \vspace{0ex}
+      & Reflectivity \vspace{1ex}
+      }
       \\
-      \bottomrule
+%      \bottomrule
     \end{tabular}
   \end{table}
 
-  \vfill
-  \begin{quote}
-    Index subspaces can provide a meaningful representation of the
-    physical process
-  \end{quote}
-
-  \vfill
-  \begin{quote}
-    Can we establish an explicit link $X(t) \xrightarrow{f} y$ for UQ?%
-  \end{quote}
+  \begin{figure}
+    \centering
+    \only<1>{%
+      \includegraphics[height=12em]{inc/computer_model_roots_crop}
+      \caption{%
+        \href{https://www.oakgov.com/water/resources/education/Documents/EnvEducation/native_plant_root_system_schematic.pdf}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
+        Water Education at Oakland County, Michigan}
+    }
+    \only<2>{%
+      \includegraphics[height=12em]{inc/computer_model_hillslope_crop}
+      \caption{%
+        \href{https://www.nature.com/scitable/knowledge/library/soil-carbon-storage-84223790/}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
+        Nature Education Knowledge}
+    }
+    \only<3>{%
+      \includegraphics[height=12em]{inc/computer_model_atmosphere_crop}
+      \caption{%
+        \href{https://commons.wikimedia.org/wiki/File:Earth's_atmosphere.svg}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
+        Wikimedia}
+    }
+  \end{figure}
 \end{frame}
+% Rework stops here ------------------------------------------------------------
 
 \begin{frame}[c]
   \frametitle{ARD + Functional inputs}
   \framesubtitle{What is the state of the art?}
 
-  \input{inc/litrev_diagram.tex}
+  A tikzdiagram goes here
+  %%\input{inc/litrev_diagram.tex}
 
   \blankfootnote{
     $~^{[1]}$\cite{muehlenstaedt2017,nanty2016,wang2017,tan2019,wang2019,betancourt2020,betancourt2020a,li2021} \,

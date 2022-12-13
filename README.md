@@ -18,3 +18,7 @@ Kelly Nascimiento at ISU (AGRON)
 Ontl, T. A., & Schulte, L. A. (2012). Soil carbon storage. Nature Education
 Knowledge, 3(10).
 https://www.nature.com/scitable/knowledge/library/soil-carbon-storage-84223790/
+
+**Earth's atmosphere**
+Kelvinsong's at Wikimedia
+https://en.wikipedia.org/wiki/Atmosphere_of_Earth#/media/File:Earth's_atmosphere.svg
