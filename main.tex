@@ -164,6 +164,12 @@ power (piironen2016)
   \frametitle{The science}
   \framesubtitle{Radiative transfer forward model }
 
+  \begin{figure}
+    \centering
+    \includegraphics[height=10em]{inc/mls_aura}
+    \includegraphics[height=10em]{inc/mls_input_profiles}
+  \end{figure}
+
   A satellite image (left)
 
   An example of the profiles but with the atmospheric rule. 3 or 4 facets
@@ -177,6 +183,11 @@ power (piironen2016)
   Introduce the ALF
 
   Equation, but also the curves
+
+  \begin{figure}
+    \centering
+    \includegraphics[height=10em]{inc/mls_weight_profiles}
+  \end{figure}
 \end{frame}
 
 \begin{frame}
@@ -191,6 +202,25 @@ power (piironen2016)
   \framesubtitle{Prediction}
 
   Table with OOS validation statistics
+
+  \begin{table}
+    \adjustbox{width=.79\textwidth,center}{%
+      \centering
+      \begin{tabular}{lrrrrr|r}
+        \toprule
+        \input{inc/validation-statistics-RMSE}
+      \end{tabular}
+      \begin{tabular}{lrrrrr|r}
+        \toprule
+        \input{inc/validation-statistics-PPLD}
+      \end{tabular}}
+    \caption{Mean validation statistics:~RMSE (left) and negative PPLD (right).
+      Smaller values are better. Bold is best in class.
+      %Note that $\EE{y}\approx 0$ and $\VV{y}\approx 1$.
+    }%
+    \label{tab:validation-statistics-mini}
+  \end{table}
+
 \end{frame}
 
 \begin{frame}
