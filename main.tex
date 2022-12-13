@@ -92,15 +92,15 @@ power (piironen2016)
       }
       \only<2>{%
       Soil erosion
-      & Elevation
+      & Slope
       & Distance
-      & Up/down slope
+      & Up/down hillslope
       & Water erosion \vspace{1ex}
       }
       \only<3>{%
       Radiance
       & Chemical species
-      & Elevation
+      & Pressure
       & Atmospheric layers
       & Reflectivity \vspace{1ex}
       }
@@ -114,14 +114,14 @@ power (piironen2016)
     \only<1>{%
       \includegraphics[height=12em]{inc/computer_model_roots_crop}
       \caption{%
-        \href{https://www.oakgov.com/water/resources/education/Documents/EnvEducation/native_plant_root_system_schematic.pdf}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
-        Water Education at Oakland County, Michigan}
+        \href{https://tallgrassprairiecenter.org/curriculum_images}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
+        Tallgrass Prairie Center}
     }
     \only<2>{%
       \includegraphics[height=12em]{inc/computer_model_hillslope_crop}
       \caption{%
         \href{https://www.nature.com/scitable/knowledge/library/soil-carbon-storage-84223790/}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
-        Nature Education Knowledge}
+        Nature Education Knowledge (ask Brian Gelder)}
     }
     \only<3>{%
       \includegraphics[height=12em]{inc/computer_model_atmosphere_crop}
@@ -138,7 +138,7 @@ power (piironen2016)
   \framesubtitle{What is the state of the art?}
 
   A tikzdiagram goes here
-  %%\input{inc/litrev_diagram.tex}
+  \input{inc/litrev_diagram.tex}
 
   \blankfootnote{
     $~^{[1]}$\cite{muehlenstaedt2017,nanty2016,wang2017,tan2019,wang2019,betancourt2020,betancourt2020a,li2021} \,
@@ -188,9 +188,23 @@ power (piironen2016)
 
 \begin{frame}
   \frametitle{Results}
+  \framesubtitle{Prediction}
+
+  Table with OOS validation statistics
+\end{frame}
+
+\begin{frame}
+  \frametitle{Results}
   \framesubtitle{Posterior for model interpretation}
 
   Figure with posterior weights for fiGP
+
+  If you only did optimization, you'd only get the pluses. By running full
+  bayes, I get the uncertainty (interval)
+
+  Consider showing the as a continuous function
+
+  Consider one posterior sample
 \end{frame}
 
 \begin{frame}
@@ -200,51 +214,25 @@ power (piironen2016)
   Figure with posterior weights for fiGP vs viGP
 \end{frame}
 
-\begin{frame}
-  \frametitle{Results}
-  \framesubtitle{Prediction}
-
-  Table with OOS validation statistics
-\end{frame}
-
 % Daily Erosion Project --------------------------------------------------------
 \section{Daily Erosion Project \\ {\small a case study}}
 
 \begin{frame}
   \frametitle{The science}
-  \framesubtitle{Explain the science here}
+  \framesubtitle{Iowa losses the thickness of a dime in soil per year (1-billion
+    dollar, .5\% GDP)}
 
+  %% https://www.dailyerosion.org/map/#20211201/20221130/avg_loss/-93.10/42.09/7.766666666666668//0/
+  %% https://www.desmoinesregister.com/story/money/agriculture/2014/05/03/erosion-estimated-cost-iowa-billion-yield/8682651/
+  %% July 4th
   \begin{figure}
     \centering
-    \includegraphics[width=.6\textwidth]{inc/dep_detachment_map_20220630_1610}
+    \includegraphics[height=17em]{inc/dep_detachment_map_20220630_168.png}
+      \caption{%
+        \href{1}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
+        Interactive map from dailyerosion.org (change to hillslope soil loss)}
   \end{figure}
-
-  {\tiny
-    View interactive map here: 
-  }
-
-% https://www.dailyerosion.org/map/#20220601/20220630/avg_loss/-94.20/42.56/7.002790504174966//0/
-  
-  A 1-billion dollar loss
 \end{frame}
-
-\begin{frame}
-  \frametitle{The science (2)}
-  \framesubtitle{Explain the science here}
-
-  \begin{figure}
-    \centering
-    \includegraphics[width=.8\textwidth]{inc/dep_detachment_map_20220630_168}
-  \end{figure}
-
-  {\tiny
-    View interactive map here: 
-  }
-
-% https://www.dailyerosion.org/map/#20220601/20220630/avg_loss/-94.20/42.56/7.002790504174966//0/
-  A 1-billion dollar loss
-\end{frame}
-
 
 \begin{frame}
   \frametitle{Data}
@@ -260,7 +248,7 @@ power (piironen2016)
   \frametitle{Methods}
   \framesubtitle{Model}
 
-  Multiple vector, functional inputs
+  Multiple vector (scalar), functional inputs
 
   Exact integral for piecewise linear models
 
@@ -298,18 +286,22 @@ power (piironen2016)
   Toward a framework for Gaussian processes with functional inputs
   \begin{itemize}
   \item Framework for Gaussian processes with functional inputs
-  \item Multiple vector and functional inputs
+  \item Multiple scalar, vector, and functional inputs
   \item Exact integral for piecewise linear inputs
-  \item 3 functional weight forms
-  \item 2 case studies
+  \item Flexible functional weight forms: ALF, ASE, FEW
+  \item Case studies: Microwave Limb Sounder, Water Erosion Prediction Project
   \end{itemize}
-
+  \vspace{3ex}
   Future work
   \begin{itemize}
   \item Functional of multiple indexes (CYCLES model 4D geometry, Grass2Gas
     grant)
   \item Multiple modes in relevance profile (MLS Temperature, mixture)
   \item Couple with local approximation (non-stationary, large matrices)
+  \item DoE:~A design to learn $\omega(t)$? Use $\omega(t)$ to inform the
+design?
+  \item Functional input with functional output?
+  \item How to bring ADRD to (D)NNs?
   \end{itemize}
 \end{frame}
 
