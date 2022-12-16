@@ -58,7 +58,7 @@
 
 %% Footer
 \setbeamertemplate{footline}{%
-  \begin{beamercolorbox}[wd=\textwidth, sep=.3cm, right]{footline}%
+  \begin{beamercolorbox}[wd=\textwidth, ht=2.5ex, sep=.3cm, right]{footline}%
     \usebeamerfont{page number in head/foot}%
     \color{gray}\tiny%
     \insertframenumber{}/\inserttotalframenumber{}

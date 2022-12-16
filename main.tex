@@ -1,9 +1,30 @@
 \documentclass{snedecorbeamer}
 
+%% Figures
+\usepackage{subcaption}
+
+%% Captions
+%%% Small font
+\captionsetup{font=tiny}
+%%% Remove caption
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+%% Footnotes
+%%% Small font https://tex.stackexchange.com/a/146021
+\setbeamerfont{footnote}{size=\tiny}
+
+% \setbeamertemplate{logo}{%
+%     \usebeamercolor[fg]{footline}%
+%     \usebeamerfont{page number in head/foot}%
+%   \usebeamertemplate*{frame numbering}%
+% }
+
 %% Diagrams
 %%% General tikz preamble
 \usepackage{tikz}
 \usetikzlibrary{positioning,decorations.pathreplacing,quotes,overlay-beamer-styles}
+
+\newcommand{\citep}[1]{}
 
 %% Create section slides
 %%% https://tex.stackexchange.com/a/117661
