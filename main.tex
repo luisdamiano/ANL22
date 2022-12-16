@@ -76,17 +76,6 @@
 \section{Motivation}
 
 \begin{frame}
-  \frametitle{Automatic Relevance Determination}
-  \framesubtitle{What is it?}
-
-  Text
-
-  Fair warning, it's not so simple: relevance = scale $\times$ linearity $\times$ predictive
-power (piironen2016)
-\end{frame}
-
-% Rework starts here -----------------------------------------------------------
-\begin{frame}
   \frametitle{Functional input computer models}
   \framesubtitle{A few examples}
 
@@ -126,7 +115,6 @@ power (piironen2016)
       & Reflectivity \vspace{1ex}
       }
       \\
-%      \bottomrule
     \end{tabular}
   \end{table}
 
@@ -134,25 +122,47 @@ power (piironen2016)
     \centering
     \only<1>{%
       \includegraphics[height=12em]{inc/computer_model_roots_crop}
-      \caption{%
+      \caption*{%
         \href{https://tallgrassprairiecenter.org/curriculum_images}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
         Tallgrass Prairie Center}
     }
     \only<2>{%
       \includegraphics[height=12em]{inc/computer_model_hillslope_crop}
-      \caption{%
+      \caption*{%
         \href{https://www.nature.com/scitable/knowledge/library/soil-carbon-storage-84223790/}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
         Nature Education Knowledge (ask Brian Gelder)}
     }
     \only<3>{%
       \includegraphics[height=12em]{inc/computer_model_atmosphere_crop}
-      \caption{%
+      \caption*{%
         \href{https://commons.wikimedia.org/wiki/File:Earth's_atmosphere.svg}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
         Wikimedia}
     }
   \end{figure}
 \end{frame}
-% Rework stops here ------------------------------------------------------------
+
+\begin{frame}
+  \frametitle{Automatic Relevance Determination\cite{neal1998}}
+  \framesubtitle{What is it?}
+
+  $\mathrm{Cor}(y_i, y_j) = e^{\omega {(x_i - x_j)}^2}$
+  where $\omega\in\mathbb{R}^+$ is a weight driving the response correlation
+
+  \begin{itemize}
+  \item A predictor has little contribution on prediction as $\omega\to0^+$
+    (flat)
+  \item A predictor contributes to local predictions as $\omega\to\infty$
+    (wiggly)
+  \end{itemize}
+
+  \begin{figure}
+    \centering
+    \includegraphics[height=10em]{inc/ard_response_profiles.pdf}
+  \end{figure}
+
+  \blankfootnote{Fair warning: it's not so simple! relevance = input scale
+    $\times$ linearity $\times$ predictive power~\cite{piironen2016}}
+\end{frame}
 
 \begin{frame}[c]
   \frametitle{ARD + Functional inputs}
