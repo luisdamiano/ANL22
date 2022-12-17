@@ -13,11 +13,8 @@
 %%% Small font https://tex.stackexchange.com/a/146021
 \setbeamerfont{footnote}{size=\tiny}
 
-% \setbeamertemplate{logo}{%
-%     \usebeamercolor[fg]{footline}%
-%     \usebeamerfont{page number in head/foot}%
-%   \usebeamertemplate*{frame numbering}%
-% }
+%% Symbol resizing
+\usepackage{scalerel}
 
 %% Diagrams
 %%% General tikz preamble
@@ -362,7 +359,8 @@
 \end{frame}
 
 % Daily Erosion Project --------------------------------------------------------
-\section{Daily Erosion Project \\ {\small a case study}}
+\section{Daily Erosion Project \\ {\small a case study} \\
+  {\tiny upcoming manuscript}}
 
 \begin{frame}
   \frametitle{The science}
@@ -405,17 +403,6 @@
   \frametitle{Methods}
   \framesubtitle{Model}
 
-%   - Output (response) variable:
-%   - Soil loss: daily sediment delivery (kg/m)
-% - Input (predictor) variable:
-%   - A hillslope profile (`slp` file)
-%     - Slope: slope steepness (m/m) at a point
-%     - Normalized distance: distance [0-1] from the top of the hillslope to the point
-%     - Mean slope: mean slope (m/m) over the profile
-%     - Hillslope length: length (m) of the overland flow element
-%   - A climate profile (`cli` file)
-%   - Precipitation: daily precipitation amount (mm of water)
-
   \begin{itemize}
   \item Output: $y\in\mathbb{R}$ daily sediment delivery off-site (log kg/m)
   \item Inputs:
@@ -425,16 +412,22 @@
     \item Mean slope: $x_2\in\mathbb{R}$ slope integral (log m/m) over the profile
     \item Slope profile: $X(t)\in\mathbb{R}$ slope steepness (log m/m) at $t$
     \item Normalized distance: $t\in[0, 1]$ from hilltop
+    \item Discretization: $\{X(t_k) : t_k = k / 20, k = 1, \dots, 19\}$
     \item Climate, management, and soil parameters fixed constant
+    \item Inputs are transformed to have approximately the same scale
     \end{itemize}
   \end{itemize}
 
   \vfill
 
   $\mathrm{Cor}(y_i, y_j) =
-  \underbrace{\exp\{{(\omega(u)(X_i(u) - X_j(t)))}^2\mathrm{d}u\}}_{\mathrm{ADRD}}
+  \underbrace{\exp\{
+    \int_\mathcal{T}
+    \omega(u){(X_i(u) - X_j(t))}^2\,\mathrm{d}u\}
+  }_{\mathrm{ADRD}}
   \times
   \underbrace{
+    \vphantom{\int_\mathcal{T}}
       \exp\{\theta_1 {(x_{1i} - x_{1j})}^2\}
   \times
   \exp\{\theta_2 {(x_{2i} - x_{2j})}^2\}
@@ -463,12 +456,13 @@
     \centering
     \includegraphics[height=10em]{inc/few_weight_profiles}
   \end{figure}
-  \begin{align}
+
+  \begin{equation}
     \log\omega(t)
     \label{eq:few-log}
-    &=\psi_{c,0} + \sum_{g = 1}^{G} \psi_{c,g}\cos\left(2\pi gt\right)
+    =\psi_{c,0} + \sum_{g = 1}^{G} \psi_{c,g}\cos\left(2\pi gt\right)
       + \sum_{g = 1}^{G} \psi_{s,g}\sin\left(2\pi gt\right)
-  \end{align}
+  \end{equation}
 
   \blankfootnote{
     Space:
@@ -494,17 +488,33 @@
   Implementation (but skip it!)
 \end{frame}
 
-\begin{frame}[c]
+\begin{frame}
   \frametitle{Results}
-  \framesubtitle{Prediction}
+  \framesubtitle{Posterior predictive validation}
 
   \begin{figure}
     \centering
     \includegraphics[height=16em]{inc/wepp_validation_summary_mini.pdf}
   \end{figure}
+
+  \blankfootnote{
+    $
+    \hat{v}_1
+    = {\tilde{M}}^{-1} \sum_{{\tilde{m}}=1}^{{\tilde{M}}} N^{-\frac{1}{2}}
+    \norm{%
+      \EV{\bm{y}_{*} | \bm{X}, \bm{X}_{*}, \bm{y}, {\bm{\theta}}_{{\tilde{m}}}}
+      - \bm{y}_{*}}
+    $ \\
+    \hspace{3.25ex}
+    $
+    \hat{v}_2 = {\tilde{M}}^{-1} \sum_{{\tilde{m}}=1}^{{\tilde{M}}}
+    p(\bm{y}_{*} | \bm{X}, \bm{X}_{*}, \bm{y},
+    {\bm{\theta}}_{{\tilde{m}}})
+    $
+  }
 \end{frame}
 
-\begin{frame}[c]
+\begin{frame}
   \frametitle{Results}
   \framesubtitle{Posterior for model interpretation}
 
@@ -512,9 +522,19 @@
     \centering
     \includegraphics[height=15em]{inc/wepp_weight_posterior_mini.pdf}
   \end{figure}
+
+  \blankfootnote{
+    $
+    p(\omega(t) | \bm{X}, \bm{y})
+    \approx
+    \{
+    \omega_m(t) | \bm{X}, \bm{y}, \bm{\theta}_m
+    : m = 1, \dots, M\}
+    $
+  }
 \end{frame}
 
-\begin{frame}[c]
+\begin{frame}
   \frametitle{Results}
   \framesubtitle{Posterior for model interpretation}
 
@@ -522,6 +542,27 @@
     \centering
     \includegraphics[height=15em]{inc/wepp_weight_integral_mini.pdf}
   \end{figure}
+
+  \blankfootnote{
+    Integrated weight:
+    $
+    \Omega = \int_\mathcal{T}\omega(t)\,\mathrm{d}t
+    $,
+    $
+    p(\Omega | \bm{X}, \bm{y})
+    \approx
+    \{
+    \Omega_m | \bm{X}, \bm{y}, \bm{\theta}_m
+    : m = 1, \dots, M\}
+    $
+    % $
+    % p(\Omega | \bm{X}, \bm{y})
+    % \approx
+    % \{
+    % \omega_m(t) | \bm{X}, \bm{y}, \bm{\theta}_m
+    % : m = 1, \dots, M\}
+    % $
+  }
 \end{frame}
 
 \begin{frame}
