@@ -215,7 +215,7 @@
       % \item Forward models are used in satellite remote sensing applications to
       %   estimate, or \emph{retrieve}, geophysical variables from satellite
       %   observations of electromagnetic radiation near 190GHz~\citep{waters2006}
-      \item We consider, for some species in 190GHz~\cite{waters2006},
+      \item We consider, for some species around 190GHz~\cite{waters2006},
         pressure regions expected to be well-informed by the
         measurements~\cite{liversey2020}
       \end{itemize}
@@ -226,41 +226,25 @@
 
 \begin{frame}[c]
   \frametitle{Data}
-  \framesubtitle{Radiative transfer forward model}
+  \framesubtitle{Microwave Limb Sounder}
 
   \begin{figure}
     \centering
     \includegraphics[height=10em]{inc/mls_input_profiles}
-    % \caption*{Sample of input profiles grouped by output magnitude}
-    % \begin{subfigure}{.30\textwidth}
-    %   \centering
-    %   \includegraphics[height=8.5em]{inc/mls_aura}
-    %   \caption*{
-    %     \href{https://www.jpl.nasa.gov/missions/microwave-limb-sounder-mls}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
-    %     NASA JPL}
-    %   \begin{minipage}{.1cm}
-    %     \vfill
-    %   \end{minipage}
-    % \end{subfigure}
-    % \begin{subfigure}{.65\textwidth}
-    %   \centering
-    %   \includegraphics[height=10em]{inc/mls_input_profiles}
-    %   \begin{minipage}{.1cm}
-    %     \vfill
-    %   \end{minipage}
-    % \end{subfigure}
-    % % \centering
-    % % \includegraphics[height=10em]{inc/mls_aura}
-    % % \includegraphics[height=10em]{inc/mls_input_profiles}
-    % % \caption*{
-    % %   \href{https://www.jpl.nasa.gov/missions/microwave-limb-sounder-mls}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
-    % %   NASA JPL}
   \end{figure}
 
   \begin{itemize}
   \item Radiance score variability is associated with the tropopause Ozone
     concentration
   \end{itemize}
+
+  \blankfootnote{
+    $y\in\mathbb{R}$ scaled radiance score,
+    $X(t)\in\mathbb{R}$ scaled concentration at $t$ \\
+    \hspace{3.25ex}
+    $t\in[0, 1]$ scaled reversed log pressure s.t.
+    $t \to 0^{+}$ and $t \to 1^{-}$ as measurements near the tropopause and
+    mesopause, respectively}
 \end{frame}
 
 \begin{frame}[c]
@@ -300,7 +284,7 @@
   \item 7 plausible models
     \begin{itemize}
     \item viGP SE, ARD, FPCA, FFPCA
-    \item fiGP Edn, SDE, ADE
+    \item fiGP Edn ($\tau=0,\kappa=1$), SDE($\kappa=1$), ADE (all free)
     \item One model fit separately per input-output pair
     \end{itemize}
   \item Fully Bayesian inference
@@ -313,13 +297,13 @@
     \item 500 post-warmup iterations
     \item 1,500 posterior samples
     \end{itemize}
-  \item Several out-of-sample validation statistics
+  \item Numerous out-of-sample validation statistics
   \end{itemize}
 \end{frame}
 
 \begin{frame}[c]
   \frametitle{Results}
-  \framesubtitle{Prediction}
+  \framesubtitle{Posterior predictive validation}
 
   \begin{table}
     \adjustbox{width=.79\textwidth,center}{%
@@ -354,7 +338,6 @@
     {\bm{\theta}}_{{\tilde{m}}})
     $
  }
-
 \end{frame}
 
 \begin{frame}
