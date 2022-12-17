@@ -406,24 +406,102 @@
 
   \begin{figure}
     \centering
-    \includegraphics[height=16em]{inc/wepp_elevation_profiles}
+    \includegraphics[height=17em]{inc/wepp_elevation_profiles}
+    \caption*{
+          \href{https://www.ars.usda.gov/midwest-area/west-lafayette-in/national-soil-erosion-research/docs/wepp/}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
+      Water Erosion Prediction Project version 2012.800
+    }
   \end{figure}
 
-  {\tiny
-    Model documentation}
+  % {\tiny
+  %   \href{https://www.ars.usda.gov/midwest-area/west-lafayette-in/national-soil-erosion-research/docs/wepp/}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
+  %     Water Erosion Prediction Project version 2012.800}
 \end{frame}
 
 \begin{frame}
   \frametitle{Methods}
   \framesubtitle{Model}
 
-  Multiple vector (scalar), functional inputs
+%   - Output (response) variable:
+%   - Soil loss: daily sediment delivery (kg/m)
+% - Input (predictor) variable:
+%   - A hillslope profile (`slp` file)
+%     - Slope: slope steepness (m/m) at a point
+%     - Normalized distance: distance [0-1] from the top of the hillslope to the point
+%     - Mean slope: mean slope (m/m) over the profile
+%     - Hillslope length: length (m) of the overland flow element
+%   - A climate profile (`cli` file)
+%   - Precipitation: daily precipitation amount (mm of water)
 
-  Exact integral for piecewise linear models
+  \begin{itemize}
+  \item Output: $y\in\mathbb{R}$ daily sediment delivery off-site (log kg/m)
+  \item Inputs:
+    \begin{itemize}
+    \item Hillslope length: $x_1\in\mathbb{R}$ length (log m) of the overland flow
+      element
+    \item Mean slope: $x_2\in\mathbb{R}$ slope integral (log m/m) over the profile
+    \item Slope profile: $X(t)\in\mathbb{R}$ slope steepness (log m/m) at $t$
+    \item Normalized distance: $t\in[0, 1]$ from hilltop
+    \item Climate, management, and soil parameters fixed constant
+    \end{itemize}
+  \end{itemize}
 
-  Math goes here
+  \vfill
 
-  Possibly, FEW profiles
+  $\mathrm{Cor}(y_i, y_j) =
+  \underbrace{\exp\{{(\omega(u)(X_i(u) - X_j(t)))}^2\mathrm{d}u\}}_{\mathrm{ADRD}}
+  \times
+  \underbrace{
+      \exp\{\theta_1 {(x_{1i} - x_{1j})}^2\}
+  \times
+  \exp\{\theta_2 {(x_{2i} - x_{2j})}^2\}
+  }_{\mathrm{ARD}}$
+\end{frame}
+
+\begin{frame}
+  \frametitle{Methods}
+  \framesubtitle{Model}
+
+  % $d$ hillslope distance
+
+  % $t = d / D$ distance normalized to 0, 1
+
+  % $H(t)$ elevation at t
+
+  % $X(t) = \partial{}H(t)\partial{}t$ Slope (m/m)
+
+  % $x_1 = \log \int_{0}^d X(u)\mathrm{d}u$ Mean slope (m)
+
+  % $x_2 = \log d$ Hillslope length (m)
+
+  % $\log y$ Soil loss (mm)
+
+  \begin{figure}
+    \centering
+    \includegraphics[height=10em]{inc/few_weight_profiles}
+  \end{figure}
+  \begin{align}
+    \log\omega(t)
+    \label{eq:few-log}
+    &=\psi_{c,0} + \sum_{g = 1}^{G} \psi_{c,g}\cos\left(2\pi gt\right)
+      + \sum_{g = 1}^{G} \psi_{s,g}\sin\left(2\pi gt\right)
+  \end{align}
+
+  \blankfootnote{
+    Space:
+    $\psi_{c,g},\psi_{s,g}\in\Reals$, $G\in\mathbb{N}$ \\
+    \hspace{3.25ex}
+    Identifiability: (i) $\phi = 1$, (ii) $\psi_{c,0} = 0$,
+    (iii) $\max_\mathcal{T}\omega(t) = 1$, or (iv)
+    $\int_\mathcal{T}\omega(t)\dx{t} = 1$
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Methods}
+  \framesubtitle{Implementation}
+
+  FEW \& ASE
 \end{frame}
 
 \begin{frame}
@@ -433,43 +511,78 @@
   Implementation (but skip it!)
 \end{frame}
 
-\begin{frame}
-  \frametitle{Results}
-  \framesubtitle{Posterior for model interpretation}
-
-  Figure with posterior weights for fiGP, and also weights for vector inputs
-\end{frame}
-
-\begin{frame}
+\begin{frame}[c]
   \frametitle{Results}
   \framesubtitle{Prediction}
 
-  Validation table
+  \begin{figure}
+    \centering
+    \includegraphics[height=16em]{inc/wepp_validation_summary_mini.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Results}
+  \framesubtitle{Posterior for model interpretation}
+
+  \begin{figure}
+    \centering
+    \includegraphics[height=15em]{inc/wepp_weight_posterior_mini.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}[c]
+  \frametitle{Results}
+  \framesubtitle{Posterior for model interpretation}
+
+  \begin{figure}
+    \centering
+    \includegraphics[height=15em]{inc/wepp_weight_integral_mini.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Discussion}
+  \framesubtitle{Posterior for model interpretation}
+
+  \begin{itemize}
+  \item fiGP and viGP perform similarly prediction-wise
+  \item fiGP and viGP agree on the overall relevance patterns
+  \item fiGP has better goodness of fit with fewer parameters
+  \item fiGP seems to extract more information than viGP from the slope profile
+  \item Relevance seems to be very smooth in this computer model, as expected
+  \end{itemize}
 \end{frame}
 
 % Discussion -------------------------------------------------------------------
 \begin{frame}
-  \frametitle{Discussion}
+  \frametitle{Summary}
   \framesubtitle{My work}
 
   Toward a framework for Gaussian processes with functional inputs
+  $Y = f(X_1(u), X_2(v), \dots, x_1, x_2, \dots)$
   \begin{itemize}
+    \footnotesize
   \item Framework for Gaussian processes with functional inputs
   \item Multiple scalar, vector, and functional inputs
-  \item Exact integral for piecewise linear inputs
   \item Flexible functional weight forms: ALF, ASE, FEW
+  \item Exact integral for piecewise linear inputs (not discussed today)
   \item Case studies: Microwave Limb Sounder, Water Erosion Prediction Project
   \end{itemize}
   \vspace{3ex}
+
   Future work
   \begin{itemize}
-  \item Functional of multiple indexes (CYCLES model 4D geometry, Grass2Gas
-    grant)
-  \item Multiple modes in relevance profile (MLS Temperature, mixture)
-  \item Couple with local approximation (non-stationary, large matrices)
+    \footnotesize
+  \item Functional of multiple indexes Y = f(X(u, v))
+    (\href{https://psumodeling.github.io/Cycles/}{
+      \resizebox{!}{1.5ex}{\beamergotobutton{www}}}
+    Cycles model basin 4D geometry)
+  \item Functional input with functional output $Y(u) = f(X(v))$
+  \item Relevance profile $\omega(t)$ with multiple local maxima (MLS Temperature, mixture)
   \item DoE:~A design to learn $\omega(t)$? Use $\omega(t)$ to inform the
-design?
-  \item Functional input with functional output?
+    design?
+  \item Couple with local approximation (non-stationary, large matrices)
   \item How to bring ADRD to (D)NNs?
   \end{itemize}
 \end{frame}
@@ -499,8 +612,11 @@ design?
   \href{ldamiano@iastate.edu}{\beamergotobutton{mail}
     ldamiano@iastate.edu}
 
+  \href{https://luisdamiano.github.io}{\beamergotobutton{www}
+    https://luisdamiano.github.io}
+
   \href{https://github.com/luisdamiano/ANL22}{\beamergotobutton{repo}
-https://github.com/luisdamiano/ANL22}
+    https://github.com/luisdamiano/ANL22}
 \end{frame}
 
 \setbeamertemplate{bibliography item}{\insertbiblabel}
