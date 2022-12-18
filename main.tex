@@ -1,5 +1,8 @@
 \documentclass{snedecorbeamer}
 
+%% References
+\usepackage{cleveref}
+
 %% Figures
 \usepackage{subcaption}
 
@@ -20,8 +23,6 @@
 %%% General tikz preamble
 \usepackage{tikz}
 \usetikzlibrary{positioning,decorations.pathreplacing,quotes,overlay-beamer-styles}
-
-\newcommand{\citep}[1]{}
 
 %% Create section slides
 %%% https://tex.stackexchange.com/a/117661
@@ -79,7 +80,7 @@
   \begin{table}[]
     \footnotesize
     %\begin{tabular}{@{}lllll@{}}
-    \begin{tabular}{p{15ex}p{20ex}p{15ex}p{20ex}p{15ex}}
+    \begin{tabular}{p{15ex}p{25ex}p{15ex}p{20ex}p{15ex}}
 %      \toprule
       \small Output
       & \begin{tabular}[c]{@{}l@{}}\small Input\\ $X(t): \mathcal{T} \to
@@ -101,12 +102,12 @@
       Soil erosion
       & Slope
       & Distance
-      & Up/down hillslope
+      & Hillslope position
       & Water erosion \vspace{1ex}
       }
       \only<3>{%
       Radiance
-      & Chemical species
+      & Chemical concentration
       & Pressure
       & Atmospheric layers
       & Reflectivity \vspace{1ex}
@@ -142,13 +143,13 @@
   \frametitle{Automatic Relevance Determination\cite{neal1998}}
   \framesubtitle{What is it?}
 
-  $\mathrm{Cor}(y_i, y_j) = e^{\omega {(x_i - x_j)}^2}$
-  where $\omega\in\mathbb{R}^+$ is a weight driving the response correlation
+  $\mathrm{Cor}(y_i, y_j) = e^{\theta {(x_i - x_j)}^2}$
+  where $\theta\in\mathbb{R}^+$ is a weight driving the response correlation
 
   \begin{itemize}
-  \item A predictor has little contribution on prediction as $\omega\to0^+$
+  \item A predictor has little contribution on prediction as $\theta\to0^+$
     (flat)
-  \item A predictor contributes to local predictions as $\omega\to\infty$
+  \item A predictor contributes to local predictions as $\theta\to\infty$
     (wiggly)
   \end{itemize}
 
@@ -157,7 +158,9 @@
     \includegraphics[height=10em]{inc/ard_response_profiles.pdf}
   \end{figure}
 
-  \blankfootnote{Fair warning: it's not so simple! relevance = input scale
+  \blankfootnote{
+    $y\in\mathbb{R},x\in\mathbb{R}, i, j = 1, \dots, N, N\in\mathbb{N}$ \\
+    \hspace{3.5ex}Fair warning: it's not so simple! relevance = input scale
     $\times$ linearity $\times$ predictive power~\cite{piironen2016}}
 \end{frame}
 
@@ -169,9 +172,18 @@
   \input{inc/litrev_diagram.tex}
 
   \blankfootnote{
-    $~^{[1]}$\cite{muehlenstaedt2017,nanty2016,wang2017,tan2019,wang2019,betancourt2020,betancourt2020a,li2021} \,
-    $~^{[2]}$\cite{morris2012,kuttubekova2019}
-    Add a keyword (e.g., PCA, FPCA, etc)
+  % $~^{[1]}$\cite{muehlenstaedt2017,nanty2016,wang2017,tan2019,wang2019,betancourt2020,betancourt2020a,li2021} \,
+  % $~^{[2]}$\cite{morris2012,kuttubekova2019}
+%    $~^{[1]}$
+  [a]
+  Treat as vectors~\cite{iooss2009,nanty2016};
+  reproject via splines~\cite{betancourt2020,betancourt2020a},
+  functional principal component analysis~\cite{wang2017,wang2019},
+  other basis representations~\cite{tan2019,li2021,striegel2022}\\
+  \hspace{3.25ex}
+  See also other attempts to incorporate the functional input structure into the
+  GP\cite{morris2012,muehlenstaedt2017,kuttubekova2019,Chen2021}
+  \hyperlink{frm:litrev}{\resizebox{!}{1.5ex}{\beamergotobutton{appendix}}}
   }
 \end{frame}
 
@@ -186,15 +198,18 @@
   \framesubtitle{Framework}
 
   A bunch of slides here
+
+  Multiple inputs
+  Don't forget to define $\Omega = \int_\mathcal{T}\omega(u)\,\mathrm{d}u$
 \end{frame}
 
 \begin{frame}
   \frametitle{Automatic Dynamic Relevance Determination}
   \framesubtitle{Other considerations}
 
-  In principle, this framework works with
+  In principle, this framework is compatible with
   \begin{itemize}
-  \item observations with unregistered / unaligned inputs
+  \item unregistered / unaligned observations
   \item correlation functions other than the squared exponential
   \item full and empirical Bayes, maximum likelihood, cross validation,
     other training paradigms
@@ -202,7 +217,6 @@
   \item smoothing models other than Gaussian Processes
   \end{itemize}
 \end{frame}
-
 
 % Microwave Limb Sounder -------------------------------------------------------
 \section{NASA's Microwave Limb Sounder \\ {\small a case study} \\
@@ -225,36 +239,31 @@
     \end{column}
     \begin{column}{0.7\textwidth}
       \begin{itemize}
-      \item MLS' forward model estimates, or \emph{retrieves}, geophysical
-        variables from electromagnetic radiation
-      \item It calculates the radiative transfer of electromagnetic radiation
-        through the atmosphere~\cite{read2006,schwartz2006}
-      \item Atmospheric profiles over a vertical grid as functional inputs
-      % \item Forward models are used in satellite remote sensing applications to
-      %   estimate, or \emph{retrieve}, geophysical variables from satellite
-      %   observations of electromagnetic radiation near 190GHz~\citep{waters2006}
-      \item We consider, for some species around 190GHz~\cite{waters2006},
-        pressure regions expected to be well-informed by the
-        measurements~\cite{liversey2020}
+      \item Computer model: MLS' forward
+        model~\cite{read2006,schwartz2006,waters2006} estimates, or
+        \emph{retrieves}, geophysical variables from electromagnetic radiation
+      \item Output: score for radiance around 190GHz~\cite{johnson2020}
+      \item Functional input: atmospheric profiles over a vertical grid
+      \item We consider some species in pressure regions expected to be
+        well-informed by the measurements~\cite{liversey2020}
       \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
 
-
 \begin{frame}[c]
   \frametitle{Data}
-  \framesubtitle{Microwave Limb Sounder}
+  \framesubtitle{Atmospheric composition and radiance}
 
   \begin{figure}
     \centering
     \includegraphics[height=10em]{inc/mls_input_profiles}
   \end{figure}
 
-  \begin{itemize}
-  \item Radiance score variability is associated with the tropopause Ozone
+  \begin{center}
+    Radiance score variability seems associated with the tropopause Ozone
     concentration
-  \end{itemize}
+  \end{center}
 
   \blankfootnote{
     $y\in\mathbb{R}$ scaled radiance score,
@@ -282,7 +291,7 @@
     Space:
     $\omega(t): \mathcal{T} = [0, 1] \to (0, 1]$,
     $s = \text{sign}(t - \tau)$,
-    $\tau > 0$,
+    $\tau\in[0,1]$,
     $\lambda > 0$,
     $\kappa > 0$ \\
     \hspace{3.25ex}
@@ -307,15 +316,16 @@
     \end{itemize}
   \item Fully Bayesian inference
     \begin{itemize}
-    \item Hamiltonian Monte Carlo~\citep[ch. 5]{brooks2011}
-    \item NUTS algorithm~\citep{hoffman2014} via
-      Stan~\citep{standevelopmentteam2021}
-    \item 1 long chain~\citep{raftery1992}
+    \item Hamiltonian Monte Carlo~\cite[ch. 5]{brooks2011}
+    \item NUTS algorithm~\cite{hoffman2014} via
+      Stan~\cite{standevelopmentteam2021}
+    \item 1 long chain~\cite{raftery1992}
     \item Extensive search for an initial value
     \item 500 post-warmup iterations
     \item 1,500 posterior samples
     \end{itemize}
-  \item Numerous out-of-sample validation statistics
+  \item \hyperlink{frm:validation}{\resizebox{!}{1.5ex}{\beamergotobutton{appendix}}}
+    Numerous out-of-sample validation statistics
   \end{itemize}
 \end{frame}
 
@@ -379,6 +389,63 @@
   Figure with posterior weights for fiGP vs viGP
 \end{frame}
 
+\begin{frame}
+  \frametitle{Model}
+  \framesubtitle{Multiple inputs}
+
+  \begin{equation}
+    \mathrm{Cor}(y_i, y_j) = \prod_q^{Q = 5}
+    \exp\left\{
+      {\phi^{-2}}_{(q)}\int_\mathcal{T}
+      \omega(u){(X^{(q)}_{i}(u) - X^{(q)}_{j}(t))}^2\,\mathrm{d}u
+    \right\}
+  \end{equation}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Results}
+  \framesubtitle{Posterior for model interpretation}
+
+  \begin{figure}
+    \centering
+    \includegraphics[height=11em]{inc/mls_weight_posterior.pdf}
+  \end{figure}
+
+  \blankfootnote{
+    $
+    p(\omega(t) | \bm{X}, \bm{y})
+    \approx
+    \{
+    \omega_m(t) | \bm{X}, \bm{y}, \bm{\theta}_m
+    : m = 1, \dots, M\}
+    $
+  }
+\end{frame}
+
+\begin{frame}
+  \frametitle{Results}
+  \framesubtitle{Which inputs are most relevant?}
+
+  \begin{figure}
+    \centering
+    \includegraphics[height=15em]{inc/mls_weight_integral.pdf}
+  \end{figure}
+
+  \blankfootnote{
+    Integrated weight:
+    $
+    \Omega = \int_\mathcal{T}\omega(t)\,\mathrm{d}t
+    $,
+    $
+    p(\Omega | \bm{X}, \bm{y})
+    \approx
+    \{
+    \Omega_m | \bm{X}, \bm{y}, \bm{\theta}_m
+    : m = 1, \dots, M\}
+    $
+  }
+\end{frame}
+
 % Daily Erosion Project --------------------------------------------------------
 \section{Daily Erosion Project \\ {\small a case study} \\
   {\tiny upcoming manuscript}}
@@ -421,8 +488,8 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{Methods}
-  \framesubtitle{Model}
+  \frametitle{Data}
+  \framesubtitle{Landscape characteristics and soil loss}
 
   \begin{itemize}
   \item Output: $y\in\mathbb{R}$ daily sediment delivery off-site (log kg/m)
@@ -499,14 +566,27 @@
   \frametitle{Methods}
   \framesubtitle{Implementation}
 
-  FEW \& ASE
-\end{frame}
-
-\begin{frame}
-  \frametitle{Methods}
-  \framesubtitle{Implementation}
-
-  Implementation (but skip it!)
+  \begin{itemize}
+  \item 8 training and 8 test complementary sets with 300 landscapes each
+  \item 4 plausible models
+    \begin{itemize}
+    \item Vector input with ARD
+    \item Functional input with asymmetric double exponential, asymmetric
+      squared exponential, and Fourier weights
+    \end{itemize}
+  \item Fully Bayesian inference
+    \begin{itemize}
+    \item Hamiltonian Monte Carlo~\cite[ch. 5]{brooks2011}
+    \item NUTS algorithm~\cite{hoffman2014} via
+      Stan~\cite{standevelopmentteam2021}
+    \item 1 long chain~\cite{raftery1992}
+    \item Extensive search for an initial value
+    \item 500 post-warmup iterations
+    \item 1,500 posterior samples
+    \end{itemize}
+  \item \hyperlink{frm:validation}{\resizebox{!}{1.5ex}{\beamergotobutton{appendix}}}
+    Numerous out-of-sample validation statistics
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -576,13 +656,6 @@
     \Omega_m | \bm{X}, \bm{y}, \bm{\theta}_m
     : m = 1, \dots, M\}
     $
-    % $
-    % p(\Omega | \bm{X}, \bm{y})
-    % \approx
-    % \{
-    % \omega_m(t) | \bm{X}, \bm{y}, \bm{\theta}_m
-    % : m = 1, \dots, M\}
-    % $
   }
 \end{frame}
 
@@ -611,7 +684,8 @@
   \item Framework for Gaussian processes with functional inputs
   \item Multiple scalar, vector, and functional inputs
   \item Flexible functional weight forms: ALF, ASE, FEW
-  \item Exact integral for piecewise linear inputs (not discussed today)
+  \item \hyperlink{frm:validation}{\resizebox{!}{1.5ex}{\beamergotobutton{appendix}}}
+    Analytical integral for piecewise linear inputs
   \item Case studies: Microwave Limb Sounder, Water Erosion Prediction Project
   \end{itemize}
   \vspace{3ex}
@@ -624,7 +698,8 @@
       \resizebox{!}{1.5ex}{\beamergotobutton{www}}}
     Cycles model basin 4D geometry)
   \item Functional input with functional output $Y(u) = f(X(v))$
-  \item Relevance profile $\omega(t)$ with multiple local maxima (MLS Temperature, mixture)
+  \item Relevance profile $\omega(t)$ with multiple local maxima (MLS
+    Temperature, mixture)
   \item DoE:~A design to learn $\omega(t)$? Use $\omega(t)$ to inform the
     design?
   \item Couple with local approximation (non-stationary, large matrices)
@@ -673,37 +748,164 @@
 
 % Appendix ---------------------------------------------------------------------
 \section{Appendix}
+
+\begin{frame}%
+  \label{frm:litrev}
+  \frametitle{Literature review}
+
+  Computer experiment with functional inputs $X(t):
+  \mathcal{T}\to\mathbb{R}$ \\
+  input quantities varying over a continuum typically modeled as function of
+  some index
+
+  \begin{itemize}
+  \item Treat input as vectors~\cite{iooss2009}
+  \item Transform input to vectors, e.g.,
+    splines~\cite{betancourt2020,betancourt2020a}, principal component
+    analysis~\cite{nanty2016}, functional principal component
+    analysis~\cite{wang2017,wang2019}, among other basis
+    functions~\cite{tan2019,li2021,striegel2022}
+  \item A weight function for time-varying inputs and outputs~\cite{morris2012}
+  \item A weight function for functional inputs with an $L^2$ norm approximated
+    via splines~\cite{muehlenstaedt2017}
+  \item A lengthscale function modeled via trigonometric basis
+    functions~\cite{kuttubekova2019}
+  \item A lengthscale for the functional input frequency~\cite{Chen2021}
+  \end{itemize}
+
+  \vfill{}
+  Although functional input computer experiments are not uncommon,
+  general methodology for functional input Gaussian processes is limited
+\end{frame}
+
 \begin{frame}
-  \frametitle{Trapezoidal approximation}
+  \frametitle{Integral approximation}
 
-  \begin{figure}[h!]
-    \centering
-    \caption[]{Trapezoidal approximation}
-  \end{figure}
+  We want to compute
+  \begin{equation}
+    I = \int_\mathcal{T}\omega(t){(X_i(t) - X_j(t))}^2\,\mathrm{d}t
+  \end{equation}
 
-  {
-    \setlength{\abovedisplayskip}{-1cm}
-    \begin{align}
-      \int_{\mathcal{T}}
-      \omega(t)
-      {\left(X_i(t) - X_j(t) \right)}^2 dt
-      \approx
-      &
-      \sum_{k = 2}^{K} {
-      \left(t_{k} - t_{k - 1}\right)
-      \frac{
-      \Delta_{i, j, k} +
-      \Delta_{i, j, k - 1}
-      }{2}
-      } \\
-      \Delta_{i, j, k} =
-      & \
-      \omega(t_{k-1}) {\left(x_{i, k} - x_{j, k}\right)}^2
-    \end{align}
-  }
+  Define
+  \begin{align}
+    \Delta t_k
+    &= t_{k} - t_{k - 1} \\
+    D_{i,j,k}
+    &= \omega(t_{k}) {\left(x_{i, k} - x_{j, k}\right)}^2
+  \end{align}
+
+  Trapezoidal approximation
+  \begin{equation}
+    I\approx
+    \sum_{k = 2}^{K}
+    \Delta t_k
+    \frac{D_{i, j, k} + D_{i, j, k - 1}}{2}
+  \end{equation}
+
+  Since
+  $S_k = e^{-\Delta t_k D_{i, j, k}}$ is positive semidefinite for fixed $k$, so
+  is the product $S = \prod_{k} S_k$.
 
   \blankfootnote{See~\cite{muehlenstaedt2017} for a B-spline
     approach}
 \end{frame}
 
+\begin{frame}%
+  \label{frm:piecewise}
+  \frametitle{Analytical solution to piecewise linear inputs}
+
+  \newcommand{\calT}{\mathcal{T}}
+  \newcommand{\dt}{\, \mathrm{d}t}
+  \newcommand{\du}{\, \mathrm{d}u}
+  \newcommand{\dv}{\, \mathrm{d}v}
+  \newcommand{\w}{\omega}
+  \newcommand{\dotsq}{{\left[d(t)\right]}^2}
+  \newcommand{\fall}{\,~\forall~\,}
+
+  Let $\w(t): \calT \to \mathbb{R}_0^+$ be a weight function and $X_i(t),
+  X_j(t): \calT \to \mathbb{R}$ be two functional input profiles over an index
+  space $\calT$. Define $d_{ij}(t) = X_i(t) - X_j(t)$. We want to find $ I_{ij}
+  \coloneqq \int_{\calT} \w(t) \, {\left[d_{ij}(t)\right]}^2 \dt$. We set
+  $\calT = [0, 1]$ and consider the integral over the index space for any
+  partition $T = \left\{ t_k: t_0 = 0 \le t_1 < \cdots < t_K \le t_{K+1} = 1
+  \right\}$. We drop the subindexes $i$, $j$ for readability.
+  \begin{align}
+  I
+  &=\int_0^1 \w(t) \, \dotsq \dt \label{eq:fnorm-direct} \\
+  &=\sum_{k = 1}^{K + 1}
+    \underbrace{
+    \int_{t_{k-1}}^{t_k} \w(t) \, \dotsq
+    \dt}_{C_k} \label{eq:fnorm-direct-pw}
+  \end{align}
+  % https://www.wolframalpha.com/input?i=Integrate%5Bw+*+%28a+%2B+b+*+t%29%5E2%2C+t%5D
+  If $X(t)$ and $\omega(t)$ are piecewise linear and constant over $[t_{k-1},
+  t_{k}]$, respectively, the integrand in $\cref{eq:fnorm-direct-pw}$ becomes
+  $\omega(t) {(a + bt)}^2$ for $a,b\in\mathbb{R}$ and $C_k =
+  {(3b)}^{-1}\omega(t_k)
+  \left[
+    {(a + b t_k)}^3 -
+    {(a + b t_{k-1})}^3
+  \right]
+  $.
+\end{frame}
+
+\begin{frame}%
+  \label{frm:validation}
+  \frametitle{Validation statistics}
+
+  \newcommand{\predmean}{\hat{\mathbf{m}}^{y}_*}
+  \newcommand{\predvar}{\hat{\mathbf{S}}^{y}_*}
+  \newcommand{\postpred}{\hat{p}^{y}_*}
+
+  \begin{itemize}
+  \item   Let
+    $\hat{\mathbf{m}} = \predmean = \{\hat{m}_{*n}: n = 1, \dots, N\} =
+    \EV{\mathbf{y}_* | \mathbf{y}, \mathbf{X}, \mathbf{X}_*}$
+    and
+    $\hat{\mathbf{S}} = \predvar = \VV{\mathbf{y}_* |
+      \mathbf{y}, \mathbf{X}, \mathbf{X}_*}$
+    be the predictive mean vector and covariance matrix.
+  \item  Define the
+    prediction error vector $\mathbf{e} = \mathbf{e}_{*}^{y} =
+    \mathbf{y}_{*} - \hat{\mathbf{m}}$.
+  \item Define the square Mahalanobis distance $D^2
+    = \mathbf{e}^{\transp} \hat{\mathbf{S}}^{-1} \mathbf{e}$.
+  \item Define the point-wise 95\% coverage indicator variable
+    $I_{n} = 1$ if $y_{*n} \in \hat{m}_{*n} \pm 1.96
+    {\hat{S}_{nn}}^{-\frac{1}{2}}$.
+  \item   Let $\bar{y}_* = N^{-1} \sum_{n=1}^{N} y_{*n}$ be the test output
+    mean.
+  \end{itemize}
+
+  \begin{center}
+    \begin{tabular}{lrl}
+      RMSE
+      & $v_{\textsc{RMSE}}$ =
+      & $N^{-\frac{1}{2}} \norm{\mathbf{e}}$ \\
+      $R^2$
+      & $v_{\textsc{R2}} $ =
+      & $1 -%
+        \norm{\mathbf{e}}^{2}
+        \norm{\mathbf{y}_* - \bar{y}_*}^{-2}$ \\
+      PPLD
+      & $v_{\textsc{PPLD}}$ =
+      & $
+        -\frac{1}{2} \log \lvert \hat{\mathbf{S}} \rvert
+        -D^2
+        -\frac{n}{2} \log 2 \pi
+        $
+      \\
+      CRPS
+      & $v_{\textsc{CRPS}}$ =
+      & $
+        -\log \lvert \hat{\mathbf{S}} \rvert%
+        -D^2
+        $
+      \\
+      Nominal coverage
+      & $v_{\textsc{COV95}}$ =
+      & $N^{-1} \sum_{n = 1}^{N} I_{n}$
+    \end{tabular}
+  \end{center}
+\end{frame}
 \end{document}
