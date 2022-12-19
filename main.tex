@@ -79,14 +79,18 @@
   \begingroup
   \setbeamersize{description width=-\labelsep}
   \begin{description}
-  \item[Short review] \mbox{}\\
-    Gaussian process surrogates for computer models with functional inputs
+  \item[Motivation] \mbox{}\\
+    Surrogates for computer models with functional inputs
   \item[Automatic Dynamic Relevance Determination] \mbox{}\\
+    \href{https://doi.org/10.48550/arXiv.2209.00044}{\resizebox{!}{1.5ex}{\beamergotobutton{arXiv:2209.00044}}}
     A framework for functional input Gaussian processes
   \item[Microwave Limb Sounder] \mbox{}\\
-    Atmospheric science application
+    \href{https://doi.org/10.48550/arXiv.2209.00044}{\resizebox{!}{1.5ex}{\beamergotobutton{arXiv:2209.00044}}}
+    Atmospheric science application in collaboration with JPL
+%    \href{https://doi.org/10.48550/arXiv.2209.00044}{arXiv:2209.00044}
   \item[Daily Erosion Project] \mbox{}\\
-    Soil science application
+    \href{https://www.dailyerosion.org/}{\resizebox{!}{1.5ex}{\beamergotobutton{upcoming}}}
+    Soil science application in collaboration with DEP
   \item[Discussion] \mbox{}\\
     Recapitulation and future research opportunities
   \item[Appendix] \mbox{}\\
@@ -119,7 +123,7 @@
   \begin{table}[]
     \footnotesize
     %\begin{tabular}{@{}lllll@{}}
-    \begin{tabular}{p{15ex}p{25ex}p{15ex}p{20ex}p{15ex}}
+    \begin{tabular}{p{15ex}p{25ex}p{15ex}p{20ex}p{20ex}}
 %      \toprule
       \small Output
       & \begin{tabular}[c]{@{}l@{}}\small Input\\ $X(t): \mathcal{T} \to
@@ -135,14 +139,14 @@
       & Phosphorus
       & Depth
       & Soil layers
-      & Root biomass \vspace{1ex}
+      & Root architecture \vspace{1ex}
       }
       \only<2>{%
       Soil erosion
       & Slope
       & Distance
       & Hillslope position
-      & Water erosion \vspace{1ex}
+      & Water flow \vspace{1ex}
       }
       \only<3>{%
       Radiance
@@ -167,7 +171,7 @@
       \includegraphics[height=12em]{inc/computer_model_hillslope_crop}
       \caption*{%
         \href{https://www.nature.com/scitable/knowledge/library/soil-carbon-storage-84223790/}{\resizebox{!}{1.5ex}{\beamergotobutton{www}}}
-        Nature Education Knowledge (ask Brian Gelder)}
+        Nature Education Knowledge}
     }
     \only<3>{%
       \includegraphics[height=12em]{inc/computer_model_atmosphere_crop}
@@ -351,6 +355,11 @@
     $\omega(t)$ can be tuned with fewer parameters than \textsc{ARD}
   \item[Smoothness] \mbox{}\\
     Smooth relevance function to penalize erratic or noisy \textsc{ARD} patterns
+    \\
+    e.g., $X(t_{k_1})$, $X(t_{k_2})$ and
+    $X(t_{k_3})$ having disparate weights despite $t_{k_1} < t_{k_2} <
+    t_{k_3}$ being close on the index space for the scale of the physical
+    problem
   \item[Interpretability] \mbox{}\\
     $\omega(t) | \mathbf{y}$ may provide information about the underlying
     physical process
@@ -369,6 +378,7 @@
   \item full and empirical Bayes, maximum likelihood, cross validation,
     other training paradigms
   \item big data approximations, e.g., local approximations
+  \item distributed and GPU-accelerated computing
   \item smoothing models other than Gaussian Processes
   \end{itemize}
 \end{frame}
@@ -1182,4 +1192,5 @@
     \end{tabular}
   \end{center}
 \end{frame}
+
 \end{document}
