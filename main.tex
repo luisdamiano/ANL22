@@ -394,7 +394,9 @@
       \item Computer model: MLS' forward
         model~\cite{read2006,schwartz2006,waters2006} estimates, or
         \emph{retrieves}, geophysical variables from electromagnetic radiation
-      \item Output: score for radiance around 190GHz~\cite{johnson2020}
+      \item Planetwide, daily data products~\cite{liversey2020} and uncertainty
+        experiments~\cite{turmon2019,braverman2021} rely on a myriad of runs
+      \item Output: score for reflected sunlight around 190GHz~\cite{johnson2020}
       \item Functional input: atmospheric profiles over a vertical grid
       \item We consider some species in pressure regions expected to be
         well-informed by the measurements~\cite{liversey2020}
@@ -435,9 +437,23 @@
     \includegraphics[height=10em]{inc/mls_weight_profiles}
   \end{figure}
 
-  \begin{center}
-    $\omega(t) = \text{exp}\left\{-(t - \tau) \lambda \kappa^s s\right\}$\\
-  \end{center}
+  \begin{equation}
+    \omega(t)
+    =
+    \text{exp}\left\{-(t - \tau)\lambda\kappa^s s\right\}
+  \end{equation}
+
+  % \begin{align}
+  %   $\omega(t)
+  %   &= \text{exp}\left\{-(t - \tau) \lambda\kappa^s s\right\}$ \\
+  %   &=
+  %   \begin{cases}
+  %     \lambda_1 = \lambda\kappa^{-1}%
+  %     & t < \tau \\
+  %     \lambda_2 = \lambda\kappa%
+  %     & t > \tau \\
+  %   \end{cases}
+  % \end{align}
 
   \blankfootnote{
     Space:
@@ -463,10 +479,11 @@
   \item 7 plausible models
     \begin{itemize}
     \item viGP SE, ARD, FPCA, FFPCA
-    \item fiGP Edn ($\tau=0,\kappa=1$), SDE($\kappa=1$), ADE (all free)
-    \item One model fit separately per input-output pair
+    \item fiGP Exponential ($\tau=0,\kappa=1$), SDE ($\kappa=1$), ADE (all free)
     \end{itemize}
-  \item Fully Bayesian inference
+  \item
+    \hyperlink{frm:inference}{\resizebox{!}{1.5ex}{\beamergotobutton{appendix}}}
+    Fully Bayesian inference
     \begin{itemize}
     \item Hamiltonian Monte Carlo~\cite[ch. 5]{brooks2011}
     \item NUTS algorithm~\cite{hoffman2014} via
@@ -498,7 +515,8 @@
       \end{tabular}}
     \caption*{%
       Mean validation statistics:~RMSE (left) and negative PPLD (right).\\
-      Smaller values are better. Bold is best in class.
+      Smaller values are better. Bold is best in class. \\
+      One model fit separately per input.
     }%
     \label{tab:validation-statistics-mini}
   \end{table}
@@ -545,7 +563,7 @@
 
   \begin{figure}
     \centering
-    \includegraphics[height=10em]{inc/mls_weight_posterior_vifi.pdf}
+    \includegraphics[height=17em]{inc/mls_weight_posterior_vifi.pdf}
   \end{figure}
 
   \blankfootnote{In this slide only, we fix $\kappa = 1$ so that
@@ -556,12 +574,24 @@
   \frametitle{Model}
   \framesubtitle{Multiple inputs}
 
+  We want to model the radiance score as a function of multiple chemical
+  species, namely H$_2$, O$_3$, N$_2$O, HNO$_3$, and temperature.
+  \begin{equation}
+    y = f(X^{(1)}, X^{(2)}, X^{(3)}, X^{(4)}, X^{(5)})
+  \end{equation}
+
+  Assume separability with one weight function per functional input
   \begin{equation}
     \mathrm{Cor}(y_i, y_j) = \prod_q^{Q = 5}
     \exp\left\{
       {\phi^{-2}}_{(q)}\int_\mathcal{T}
-      \omega(u){(X^{(q)}_{i}(u) - X^{(q)}_{j}(t))}^2\,\mathrm{d}u
+      \omega(t)^{(q)}{(X^{(q)}_{i}(t) - X^{(q)}_{j}(t))}^2\,\mathrm{d}t
     \right\}
+  \end{equation}
+
+  Use the integrated weight to gauge the contribution of each species
+  \begin{equation}
+    \Omega_q = \phi_{(q)}^{-2}\int_\mathcal{T}\omega^{(q)}(t)\,\mathrm{d}t
   \end{equation}
 \end{frame}
 
@@ -573,6 +603,10 @@
     \centering
     \includegraphics[height=11em]{inc/mls_weight_posterior.pdf}
   \end{figure}
+  \vfill{}
+  \begin{itemize}
+  \item Validation: ADRD and ARD get $R^2 = .97$ out of sample
+  \end{itemize}
 
   \blankfootnote{
     $
@@ -597,7 +631,7 @@
   \blankfootnote{
     Integrated weight:
     $
-    \Omega = \int_\mathcal{T}\omega(t)\,\mathrm{d}t
+    \Omega = \phi^{-2}\int_\mathcal{T}\omega(t)\,\mathrm{d}t
     $,
     $
     p(\Omega | \bm{X}, \bm{y})
@@ -616,13 +650,14 @@
   \begin{itemize}
   \item ADRD and ARD perform similarly prediction-wise
   \item ADRD and ARD agree on the overall relevance patterns
+  \item ADRD has $\sim15$ times fewer parameters to learn
   \item ADRD rules out erratic patterns in relevance
   \item ADRD posterior patterns are consistent with the underlying science
     \begin{itemize}
     \item Relevance within a chemical species over the vertical grid via the
       $\omega(t)$ function
     \item Relevance between chemical species via the integrated weight statistic
-      $\Omega_q$
+      $\Omega$
     \end{itemize}
   \end{itemize}
 \end{frame}
