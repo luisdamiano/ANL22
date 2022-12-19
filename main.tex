@@ -790,7 +790,9 @@
     \item Functional input with asymmetric double exponential, asymmetric
       squared exponential, and Fourier weights
     \end{itemize}
-  \item Fully Bayesian inference
+  \item
+    \hyperlink{frm:inference}{\resizebox{!}{1.5ex}{\beamergotobutton{appendix}}}
+    Fully Bayesian inference
     \begin{itemize}
     \item Hamiltonian Monte Carlo~\cite[ch. 5]{brooks2011}
     \item NUTS algorithm~\cite{hoffman2014} via
@@ -994,7 +996,8 @@
   general methodology for functional input Gaussian processes is limited
 \end{frame}
 
-\begin{frame}
+\begin{frame}%
+  \label{frm:riemann}
   \frametitle{Integral approximation}
 
   We want to compute
@@ -1063,6 +1066,57 @@
     {(a + b t_{k-1})}^3
   \right]
   $.
+\end{frame}
+
+\begin{frame}%
+  \label{frm:inference}
+  \frametitle{Fully Bayesian inference}
+
+  \begin{itemize}
+  \item We denote the parameter vector by $\bm{\theta} =
+    (\bm{\theta}_{d}, \sigma_f^2, \sigma_{\varepsilon}^2)$, where
+    $\bm{\theta}_{d}$ encompasses the unknowns for a specific choice of
+    $d(X_i, X_j)$, e.g., $\bm{\theta}_{d} = (\phi, \lambda, \kappa, \tau)$.
+  \item We generally recommend the following independent weakly informative
+    priors for cases where there is no domain-specific information about
+    the relevance profile:
+    %
+    $\phi \sim \textsc{InvGamma}(\cdot, \cdot)$,
+    $\tau \sim \textsc{Beta}(\cdot, \cdot)$,
+    $\lambda \sim \textsc{N}^{+}(\cdot, \cdot)$,
+    $\log(\kappa) \sim \textsc{N}(\cdot, \cdot)$,
+    $\phi\sim\textsc{N}(\cdot, \cdot)$
+    for the fiGP parameters, and
+    $\sigma_f, \sigma_{\varepsilon} \iid \textsc{N}^{+}(\cdot, \cdot)$
+    for the standard deviation parameters.
+  \item The choice
+    of prior for $\phi$ is motivated by the fact that values extremely
+    close to zero or large may lead to numerical issues due to posterior
+    density flattening.
+  \item Let $\mathbf{X}$ be training input matrix, $\mathbf{m}_y =
+    m_y(\mathbf{X})$ the mean vector with %elements
+    ${(\mathbf{m}_y)}_{i} = m_y(\mathbf{x}_i)$, and $\mathbf{S}_y =
+    s_y(\mathbf{X})$ the covariance matrix with %elements
+    ${(\mathbf{S}_y)}_{i, j} = s_y(X_i, X_j | {\bm{\theta}})$.
+  \item Draw samples from the posterior $\bm{\theta}_m\sim\log p(\bm{\theta} |
+    \mathbf{y}, \mathbf{X})$, $m = 1, \dots, M\in\mathbb{N}$
+  \end{itemize}
+  \begin{align}
+    \label{eq:margina-likelihood}
+    \log p(\mathbf{y} | \mathbf{X}, \bm{\theta})
+    =& -\frac{1}{2}
+       {(\mathbf{y} - \mathbf{m}_y)}^\top
+       {\mathbf{S}_y}^{-1}
+       {(\mathbf{y} - \mathbf{m}_y)}
+       -\frac{1}{2}
+       \log | \mathbf{S}_y |
+       - \frac{n}{2} \log 2\pi \\
+    \label{eq:parameter-posterior}
+    \log p(\bm{\theta} | \mathbf{y}, \mathbf{X})
+    \propto&
+             \log p(\mathbf{y} | \mathbf{X}, \bm{\theta}) +
+             \log p(\bm{\theta}).
+  \end{align}
 \end{frame}
 
 \begin{frame}%
