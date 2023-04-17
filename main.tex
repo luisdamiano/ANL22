@@ -671,6 +671,7 @@
       $\omega(t)$ function
     \item Relevance between chemical species via the integrated weight statistic
       $\Omega$
+    \item \hyperlink{frm:pfdi}{\resizebox{!}{1.5ex}{\beamergotobutton{appendix}}} Patterns observed via relevance screening
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -1191,6 +1192,37 @@
       & $N^{-1} \sum_{n = 1}^{N} I_{n}$
     \end{tabular}
   \end{center}
+\end{frame}
+
+\begin{frame}%
+  \label{frm:pdfi}
+  \frametitle{Dynamic relevance screening}
+
+  \begin{itemize}
+  \item We want to study the sensitivity of predictive accuracy to the
+    information contained in different index subspaces
+  \item We quantify the change in the validation statistics as we permute pieces
+    of the input profile
+  \item Let
+    $\left\{\mathrm{T}_u\right\}_{u=1}^{U}, U \in \mathbb{N}$ form a
+    partition of the index space $\mathcal{T}$.
+  \item Let $\underline{\mathbf{x}}_{i,u} = [\mathbf{x}_{i,1}\cdots
+    \mathbf{x}_{i',u}\cdots\mathbf{x}_{i,U}]$ be the corrupted input vector
+    where $i' \ne i$ is chosen by random permutation, and
+    $\underline{\mathbf{X}}_u$ the corrupted input matrix
+  \item Train an $d_{\textsc{ARD}}(\cdot)$ model with $\theta_k > 0 \
+    \forall \ k = 1, \dots K$ on $\mathbf{X}$
+  \item Validated on
+    $\underline{\mathbf{X}}_{*u}$ instead of $\mathbf{X}_{*}$
+  \item Compare the validation statistic
+    produced with the corrupted test input matrix to the
+    reference point via the deterioration statistic $\Delta_{u} =
+    \underline{v}_{u} - v$.
+  \item The higher the increase in the loss statistic due to the permutation
+    in the input block associated with the $u$-th index interval, the more
+    reliant prediction accuracy is on the corresponding index
+    subspace.
+  \end{itemize}
 \end{frame}
 
 \end{document}
